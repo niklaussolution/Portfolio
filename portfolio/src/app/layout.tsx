@@ -7,7 +7,7 @@ const display = Space_Grotesk({ subsets: ['latin'], variable: '--font-display', 
 const body = Inter({ subsets: ['latin'], variable: '--font-body' });
 const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono', weight: ['400', '500'] });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://harishganesan.com';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://harishganesan.com';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

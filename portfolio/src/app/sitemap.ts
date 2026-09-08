@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { caseStudies } from '@/lib/site-content';
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://harishganesan.com';
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://harishganesan.com';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
