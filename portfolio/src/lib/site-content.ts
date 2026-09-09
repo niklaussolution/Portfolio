@@ -54,8 +54,8 @@ export const aboutCards = [
 export const stats = [
   { value: '10+', label: 'Years Experience', draft: false },
   { value: '—', label: 'Security Investigations', draft: true },
-  { value: '—', label: 'Students Trained', draft: true },
-  { value: '—', label: 'Projects Delivered', draft: true },
+  { value: '1000+', label: 'Students Trained', draft: false },
+  { value: '30+', label: 'Projects Delivered', draft: false },
 ];
 
 export const expertise = [
