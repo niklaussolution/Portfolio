@@ -16,7 +16,7 @@ All public copy currently reads from `src/lib/site-content.ts`. Its shape mirror
 models 1:1, so wiring the admin CMS later means swapping these reads for DB queries without
 touching component code.
 
-**Nothing is hardcoded that shouldn't be:** OSCP is seeded as `IN PROGRESS`, experience/impact
+**Nothing is hardcoded that shouldn't be:** OSCP is seeded as `VERIFIED`, experience/impact
 stats that aren't confirmed are marked `draft`, and no unverified achievements or numbers were
 invented.
 

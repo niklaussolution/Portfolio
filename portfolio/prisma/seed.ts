@@ -46,7 +46,7 @@ async function main() {
       id: 'oscp',
       name: 'OSCP',
       issuer: 'OffSec',
-      status: 'IN_PROGRESS',
+      status: 'VERIFIED',
     },
   });
 

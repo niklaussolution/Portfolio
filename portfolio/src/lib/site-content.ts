@@ -25,9 +25,9 @@ export const profile = {
     'His work combines offensive security understanding with defensive thinking, technical investigation and practical support for individuals and organizations affected by cybersecurity incidents.',
   ],
   socials: {
-    linkedin: '#',
+    linkedin: 'https://www.linkedin.com/in/harish-ganesan-4228242a1',
     github: '#',
-    instagram: '#',
+    instagram: 'https://www.instagram.com/niklaussolution_official',
   },
 };
 
@@ -181,11 +181,6 @@ export const timeline = [
 
 export const education = [
   {
-    degree: 'B.E. Cyber Security',
-    institution: 'Shree Venkateshwara Hi-Tech Engineering College',
-    status: 'Pursuing',
-  },
-  {
     degree: 'Diploma in Electronics and Communication Engineering',
     institution: 'Excel Polytechnic College',
     status: '85.1%',
@@ -209,7 +204,7 @@ export const certifications = [
   {
     name: 'OSCP',
     issuer: 'OffSec',
-    status: 'IN PROGRESS' as const,
+    status: 'VERIFIED' as const,
   },
 ];
 
