@@ -1,7 +1,10 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { gsap } from 'gsap';
+
+const PreloaderScene = dynamic(() => import('./PreloaderScene'), { ssr: false });
 
 const STAGES = [
   'INITIALIZING SECURE SESSION',
@@ -15,6 +18,7 @@ export function Preloader() {
   const [progress, setProgress] = useState(0);
   const [stageIndex, setStageIndex] = useState(0);
   const [verified, setVerified] = useState(false);
+  const [show3D, setShow3D] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -25,6 +29,9 @@ export function Preloader() {
     document.body.style.overflow = 'hidden';
 
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isTouch = window.matchMedia('(pointer: coarse)').matches;
+    setShow3D(!reduced && !isTouch);
+
     const duration = reduced ? 300 : 2800;
     const start = performance.now();
 
@@ -69,7 +76,12 @@ export function Preloader() {
       role="status"
       aria-live="polite"
     >
-      <div className="w-[min(420px,80vw)] text-center">
+      {show3D && (
+        <div className="pointer-events-none absolute inset-0 opacity-70">
+          <PreloaderScene />
+        </div>
+      )}
+      <div className="relative w-[min(420px,80vw)] text-center">
         <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-paper-muted">
           {verified ? 'ACCESS GRANTED' : STAGES[stageIndex]}
         </p>
