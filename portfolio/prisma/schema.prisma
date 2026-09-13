@@ -1,0 +1,245 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  EDITOR
+}
+
+enum SubmissionStatus {
+  NEW
+  REVIEWED
+  ARCHIVED
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         Role     @default(EDITOR)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  auditLogs    AuditLog[]
+}
+
+model Profile {
+  id              String   @id @default(cuid())
+  name            String
+  title           String
+  company         String
+  companyUrl      String?
+  aboutHtml       String?
+  experienceYears String?
+  portraitUrl     String?
+  secondaryPhotoUrl String?
+  resumeUrl       String?
+  email           String?
+  phone           String?
+  location        String?
+  heroEyebrow     String?
+  heroStatement   String?
+  availability    String   @default("AVAILABLE")
+  status          String   @default("ACTIVE")
+  updatedAt       DateTime @updatedAt
+}
+
+model SiteSetting {
+  id    String @id @default(cuid())
+  key   String @unique
+  value String
+}
+
+model SocialLink {
+  id        String  @id @default(cuid())
+  platform  String
+  url       String
+  sortOrder Int     @default(0)
+}
+
+model Experience {
+  id          String   @id @default(cuid())
+  role        String
+  org         String
+  period      String?
+  description String?
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Education {
+  id          String @id @default(cuid())
+  degree      String
+  institution String
+  status      String?
+  sortOrder   Int    @default(0)
+}
+
+model SkillCategory {
+  id        String  @id @default(cuid())
+  name      String
+  sortOrder Int     @default(0)
+  skills    Skill[]
+}
+
+model Skill {
+  id              String        @id @default(cuid())
+  name            String
+  categoryId      String
+  category        SkillCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  sortOrder       Int           @default(0)
+}
+
+model Certification {
+  id              String    @id @default(cuid())
+  name            String
+  issuer          String
+  status          String    @default("IN_PROGRESS")
+  credentialId    String?
+  issueDate       DateTime?
+  expiryDate      DateTime?
+  verificationUrl String?
+  imageUrl        String?
+  sortOrder       Int       @default(0)
+}
+
+model Award {
+  id          String   @id @default(cuid())
+  title       String
+  issuer      String?
+  description String?
+  imageUrl    String?
+  featured    Boolean  @default(false)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+}
+
+model Project {
+  id           String   @id @default(cuid())
+  title        String
+  slug         String   @unique
+  category     String?
+  description  String?
+  problem      String?
+  solution     String?
+  technologies String[]
+  role         String?
+  githubUrl    String?
+  liveUrl      String?
+  status       String   @default("ACTIVE")
+  featured     Boolean  @default(false)
+  published    Boolean  @default(true)
+  sortOrder    Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  media        Media[]
+}
+
+model CaseStudy {
+  id              String   @id @default(cuid())
+  caseNumber      String   @unique
+  title           String
+  slug            String   @unique
+  date            DateTime?
+  category        String?
+  severity        String   @default("MEDIUM")
+  status          String   @default("RESEARCH")
+  summary         String?
+  context         String?
+  technicalHtml   String?
+  process         String[]
+  impact          String?
+  recommendations String[]
+  tools           String[]
+  outcome         String?
+  seoTitle        String?
+  seoDescription  String?
+  published       Boolean  @default(false)
+  featured        Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  indicators      CaseIndicator[]
+  media           Media[]
+}
+
+model CaseIndicator {
+  id          String    @id @default(cuid())
+  caseStudyId String
+  caseStudy   CaseStudy @relation(fields: [caseStudyId], references: [id], onDelete: Cascade)
+  label       String
+  sortOrder   Int       @default(0)
+}
+
+model Testimonial {
+  id           String   @id @default(cuid())
+  name         String
+  role         String?
+  organization String?
+  quote        String
+  photoUrl     String?
+  featured     Boolean  @default(false)
+  published    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+}
+
+model Media {
+  id          String     @id @default(cuid())
+  url         String
+  alt         String?
+  caption     String?
+  category    String?
+  projectId   String?
+  project     Project?   @relation(fields: [projectId], references: [id])
+  caseStudyId String?
+  caseStudy   CaseStudy? @relation(fields: [caseStudyId], references: [id])
+  sortOrder   Int        @default(0)
+  createdAt   DateTime   @default(now())
+}
+
+model ContactSubmission {
+  id        String           @id @default(cuid())
+  reference String           @unique
+  name      String
+  email     String
+  message   String
+  status    SubmissionStatus @default(NEW)
+  ip        String?
+  createdAt DateTime         @default(now())
+}
+
+model IncidentSubmission {
+  id                String           @id @default(cuid())
+  reference         String           @unique
+  fullName          String
+  email             String
+  phone             String
+  category          String
+  incidentDate      DateTime?
+  platform          String?
+  description       String
+  financialLoss     Boolean          @default(false)
+  urgency           String           @default("medium")
+  preferredContact  String           @default("email")
+  evidenceUrl       String?
+  status            SubmissionStatus @default(NEW)
+  ip                String?
+  createdAt         DateTime         @default(now())
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorId   String?
+  actor     User?    @relation(fields: [actorId], references: [id])
+  action    String
+  metadata  Json?
+  ip        String?
+  createdAt DateTime @default(now())
+}
