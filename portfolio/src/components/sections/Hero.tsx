@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { gsap } from 'gsap';
 import { Container } from '@/components/ui/Container';
 import { PrimaryButton, OutlineButton } from '@/components/ui/Buttons';
@@ -91,11 +92,18 @@ export function Hero() {
         <div data-hero-fade className="relative mx-auto aspect-[3/4] w-full max-w-[420px]">
           <div className="absolute -inset-6 border border-line-red" aria-hidden />
           <div className="relative flex h-full w-full items-center justify-center overflow-hidden border border-line bg-ink-900">
-            <span className="font-display text-[7vw] leading-none text-outline lg:text-6xl">HG</span>
-            <div className="absolute inset-x-0 top-0 h-1/3 animate-scan bg-gradient-to-b from-security-red/20 to-transparent" aria-hidden />
-            <p className="absolute bottom-4 left-4 font-mono text-[10px] uppercase tracking-[0.2em] text-paper-muted">
-              Portrait — pending admin upload
-            </p>
+            <span className="pointer-events-none absolute font-display text-[7vw] leading-none text-outline lg:text-6xl">
+              HG
+            </span>
+            <Image
+              src="/harish-portrait.png"
+              alt="Harish Ganesan"
+              fill
+              priority
+              sizes="(min-width: 1024px) 420px, 80vw"
+              className="relative object-cover object-top"
+            />
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-1/3 animate-scan bg-gradient-to-b from-security-red/20 to-transparent" aria-hidden />
           </div>
         </div>
       </Container>
